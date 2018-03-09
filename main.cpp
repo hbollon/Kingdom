@@ -2,13 +2,14 @@
 
 using namespace std;
 
-
+player Player;
 
 int main()
 {
-    m_State = 1;
+    gameState = 1;
     int m_Hauteur = 1080;
     int m_Largeur = 1920;
+    int direction;
     bool m_fullscreen = false;
 
     sf::ContextSettings settings;
@@ -24,8 +25,15 @@ int main()
         App = new sf::RenderWindow (sf::VideoMode(m_Largeur, m_Hauteur, 32), "Tales of a Survivor");
     }
 
-    App->setVerticalSyncEnabled(true);
+    App->setVerticalSyncEnabled(false);
+    App->setFramerateLimit(60);
     App->setKeyRepeatEnabled(false);
+
+    loadMap();
+    loadCollision();
+    loadTextures();
+
+    //player Player;
 
     while (App->isOpen()) //Boucle de jeu
        {
@@ -47,16 +55,122 @@ int main()
                }
            }
 
-           switch (m_State)
+           if (sf::Keyboard::isKeyPressed((sf::Keyboard::Z)) || sf::Keyboard::isKeyPressed((sf::Keyboard::Up)))
+           {
+               direction = 1;
+               Player.moveUp();
+               Player.animation();
+           }
+           if (sf::Keyboard::isKeyPressed((sf::Keyboard::S)) || sf::Keyboard::isKeyPressed((sf::Keyboard::Down)))
+           {
+               direction = 2;
+               Player.moveDown();
+               Player.animation();
+           }
+           if  (((sf::Keyboard::isKeyPressed((sf::Keyboard::D)) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Z))) == false) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::S)))) == false) || (sf::Keyboard::isKeyPressed((sf::Keyboard::Right))) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Up))) == false) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Down)))) == false))
+           {
+               direction = 3;
+               Player.moveRight();
+               Player.animation();
+           }
+           if (((sf::Keyboard::isKeyPressed((sf::Keyboard::Q)) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Z))) == false) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::S)))) == false) || (sf::Keyboard::isKeyPressed((sf::Keyboard::Left))) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Up))) == false) && ((sf::Keyboard::isKeyPressed((sf::Keyboard::Down)))) == false))
+           {
+               direction = 4;
+               Player.moveLeft();
+               Player.animation();
+           }
+           if (sf::Keyboard::isKeyPressed((sf::Keyboard::E)))
+           {
+
+               if (changeMap.changeUp == true)
+               {
+                    Player.position(80, Player.getY());
+                    mapSelected = "mapUp.txt";
+                    mapColSelected = "colMapEmpty.txt";
+                    loadMap();
+                    loadCollision();
+               }
+               else if (changeMap.changeDown == true)
+               {
+                    Player.position(80, Player.getY());
+                    mapSelected = "mapDown.txt";
+                    mapColSelected = "colMapEmpty.txt";
+                    loadMap();
+                    loadCollision();
+               }
+               else if (changeMap.changeRight == true)
+               {
+                    Player.position(80, Player.getY());
+                    mapSelected = "mapRight.txt";
+                    mapColSelected = "colMapEmpty.txt";
+                    loadMap();
+                    loadCollision();
+               }
+               else if (changeMap.changeLeft == true)
+               {
+                    Player.position(80, Player.getY());
+                    mapSelected = "mapLeft.txt";
+                    mapColSelected = "colMapEmpty.txt";
+                    loadMap();
+                    loadCollision();
+               }
+           }
+
+
+           Player.update();
+
+           int colTest = collisionTest();
+           switch(colTest)
+           {
+           case (1):
+               switch (direction)
+               {
+               case (1):
+                       Player.colUp();
+                   break;
+
+              case (2):
+                       Player.colDown();
+                   break;
+
+               case (3):
+                       Player.colRight();
+                   break;
+
+               case (4):
+                       Player.colLeft();
+                   break;
+
+               default:
+                   break;
+               }
+               break;
+
+           case (2):
+                arrow = 1;
+               break;
+
+           case (3):
+               arrow = 2;
+               break;
+
+           case (4):
+               arrow = 3;
+               break;
+
+           case (5):
+               arrow = 4;
+               break;
+
+           default:
+               arrow = 0;
+               break;
+           }
+
+           switch (gameState)
            {
              case 1:
                mainmenu();
-               break;
-
-             case 2:
-               break;
-
-             case 3:
                break;
 
              default:
@@ -71,13 +185,55 @@ int main()
                        {
                            if(mapp[i][j].x !=-1 && mapp[i][j].y !=-1)
                                {
-                                   tiles.setPosition(j*48, i*48);
-                                   tiles.setTextureRect(sf::IntRect(mapp[i][j].x *48, mapp[i][j].y *48, 48, 48));
+                                   tiles.setPosition(j*40, i*40);
+                                   tiles.setTextureRect(sf::IntRect(mapp[i][j].x *40, mapp[i][j].y *40, 40, 40));
                                    App->draw(tiles);
                                }
                        }
                    }
 
+           if (arrow == 1)
+           {
+               ArrowUp.setPosition(Player.getSprite().getPosition().x + 15, Player.getSprite().getPosition().y + 70);
+               changeMap.changeUp = true;
+               App->draw(ArrowUp);
+           }
+           else
+           {
+                changeMap.changeUp = false;
+           }
+           if (arrow == 2)
+           {
+               ArrowDown.setPosition(Player.getSprite().getPosition().x + 13, Player.getSprite().getPosition().y - 60);
+               changeMap.changeDown = true;
+               App->draw(ArrowDown);
+           }
+           else
+           {
+                changeMap.changeDown = false;
+           }
+           if (arrow == 3)
+           {
+               ArrowRight.setPosition(Player.getSprite().getPosition().x - 60, Player.getSprite().getPosition().y + 20);
+               changeMap.changeRight = true;
+               App->draw(ArrowRight);
+           }
+           else
+           {
+                changeMap.changeRight = false;
+           }
+           if (arrow == 4)
+           {
+               ArrowLeft.setPosition(Player.getSprite().getPosition().x + 60, Player.getSprite().getPosition().y + 20);
+               changeMap.changeLeft = true;
+               App->draw(ArrowLeft);
+           }
+           else
+           {
+                changeMap.changeLeft = false;
+           }
+
+           App->draw(Player.getSprite());
            App->display();
        }
 }
@@ -182,4 +338,61 @@ int loadMusic() //Selection de la musique en fonction du niveau
     }
 
     return 0;
+}
+
+int collisionTest()
+{
+    int out = 0;
+    for(int i = 0; i < Player.tiles.size(); i++)
+    {
+        if(collision[Player.tiles[i].y][Player.tiles[i].x] == 1)
+        {
+            out = 1;
+        }
+        else if(collision[Player.tiles[i].y][Player.tiles[i].x] == 2)
+        {
+            out = 2;
+        }
+        else if(collision[Player.tiles[i].y][Player.tiles[i].x] == 3)
+        {
+            out = 3;
+        }
+        else if(collision[Player.tiles[i].y][Player.tiles[i].x] == 4)
+        {
+            out = 4;
+        }
+        else if(collision[Player.tiles[i].y][Player.tiles[i].x] == 5)
+        {
+            out = 5;
+        }
+    }
+
+    return out;
+}
+
+void loadTextures()
+{
+    if (!ArrowUpT.loadFromFile("arrowU.png"))
+    {
+        std::cout << "Error : can't load arrowU.png" << std::endl;
+    }
+    ArrowUp.setTexture(ArrowUpT);
+
+    if (!ArrowDownT.loadFromFile("arrowD.png"))
+    {
+        std::cout << "Error : can't load arrowD.png" << std::endl;
+    }
+    ArrowDown.setTexture(ArrowDownT);
+
+    if (!ArrowRightT.loadFromFile("arrowR.png"))
+    {
+        std::cout << "Error : can't load arrowR.png" << std::endl;
+    }
+    ArrowRight.setTexture(ArrowRightT);
+
+    if (!ArrowLeftT.loadFromFile("arrowL.png"))
+    {
+        std::cout << "Error : can't load arrowL.png" << std::endl;
+    }
+    ArrowLeft.setTexture(ArrowLeftT);
 }

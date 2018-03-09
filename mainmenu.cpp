@@ -1,6 +1,6 @@
-    #include "game.h"
+#include "game.h"
 
-void NewGame();
+int NewGame();
 void LoadGame();
 void Settings();
 
@@ -25,6 +25,11 @@ void mainmenu()
     sf::Text w_exit;
     sf::Font f_fantasySymb;
     sf::Font f_gameFont;
+
+    m_titleMusic.openFromFile("Heroic.ogg");
+    m_titleMusic.setLoop(true);
+    m_titleMusic.setVolume(100);
+    m_titleMusic.play();
 
     if(!t_cursor.loadFromFile("sword.png"))
     {
@@ -77,12 +82,7 @@ void mainmenu()
     s_cursor.setPosition(v_cursor);
     s_cursor.setScale(0.5,0.5);
 
-    m_titleMusic.openFromFile("Heroic.ogg");
-    m_titleMusic.setLoop(true);
-    m_titleMusic.setVolume(100);
-    m_titleMusic.play();
-
-    while (m_State == 1)
+    while (gameState == 1)
     {
         CursorGetY = s_cursor.getPosition().y;
 
@@ -98,6 +98,7 @@ void mainmenu()
             {
                 if (event_menu.key.code == sf::Keyboard::Escape)
                 {
+                    gameState = 0;
                     App->close();
                     m_titleMusic.stop();
                 }
@@ -141,6 +142,7 @@ void mainmenu()
                         Settings();
                         break;
                     case 500:
+                        gameState = 0;
                         m_titleMusic.stop();
                         App->close();
                         break;
@@ -165,9 +167,10 @@ void mainmenu()
     }
 }
 
-void NewGame()
+int NewGame()
 {
     bool b_newGameState = true;
+    int out = 0;
     sf::Font f_gameFont;
 
     if(!f_gameFont.loadFromFile("Breathe Fire.otf"))
@@ -221,6 +224,7 @@ void NewGame()
         {
             if (event_menu.type == sf::Event::Closed)
             {
+                gameState = 0;
                 App->close();
                 m_titleMusic.stop();
             }
@@ -288,23 +292,33 @@ void NewGame()
                 }
                 else if (event_menu.key.code == sf::Keyboard::Return)
                 {
-                    if (s_cursor.getPosition().x == 410)
+                    if (v_cursor.x == 410 && v_cursor.y == 380)
                     {
-                        v_cursor.x = 1080;
-                        s_cursor.setPosition(v_cursor);
+                        out = 1;
+                        gameState = 2;
+                        m_titleMusic.stop();
+                        b_newGameState = false;
                     }
-                    else if ()
+                    else if (v_cursor.x == 1080 && v_cursor.y == 380)
                     {
-                        v_cursor.x -= 670;
-                        s_cursor.setPosition(v_cursor);
+                        out = 2;
+                        gameState = 2;
+                        m_titleMusic.stop();
+                        b_newGameState = false;
                     }
-                    else if ()
+                    else if (v_cursor.x == 410 && v_cursor.y == 660)
                     {
-
+                        out = 3;
+                        gameState = 2;
+                        m_titleMusic.stop();
+                        b_newGameState = false;
                     }
-                    else if ()
+                    else if (v_cursor.x == 1080 && v_cursor.y == 660)
                     {
-
+                        out = 4;
+                        gameState = 2;
+                        m_titleMusic.stop();
+                        b_newGameState = false;
                     }
                 }
             }
@@ -318,6 +332,8 @@ void NewGame()
         App->draw(Slot4);
         App->display();
     }
+
+    return out;
 }
 
 void LoadGame()

@@ -2,11 +2,12 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += main.cpp \
     mainmenu.cpp \
-    game.cpp
+    game.cpp \
+    player.cpp
 
 
 LIBS += -L"/home/hbollon/Projects/SFML-master/lib"
@@ -18,4 +19,5 @@ INCLUDEPATH += "/home/hbollon/Projects/SFML-master/include"
 DEPENDPATH += "/home/hbollon/Projects/SFML-master/include"
 
 HEADERS += \
-    game.h
+    game.h \
+    player.h

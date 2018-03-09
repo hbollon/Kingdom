@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "player.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -21,9 +22,34 @@ extern sf::Music music;
 extern std::string mapSelected;
 extern std::string mapColSelected;
 extern int levelSelected;
-extern int m_State;
+extern int gameState;
+extern int arrow;
+
+extern sf::Sprite ArrowUp;
+extern sf::Sprite ArrowDown;
+extern sf::Sprite ArrowRight;
+extern sf::Sprite ArrowLeft;
+
+extern sf::Texture ArrowUpT;
+extern sf::Texture ArrowDownT;
+extern sf::Texture ArrowRightT;
+extern sf::Texture ArrowLeftT;
+
+struct dirTable
+{
+    bool changeUp;
+    bool changeDown;
+    bool changeRight;
+    bool changeLeft;
+};
+
+extern struct dirTable changeMap;
 
 void mainmenu();
+void loadMap();
+void loadCollision();
+void loadTextures();
+int collisionTest();
 
 #endif // GAME
 
