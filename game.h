@@ -23,7 +23,6 @@ extern std::string mapSelected;
 extern std::string mapColSelected;
 extern int levelSelected;
 extern int gameState;
-extern int arrow;
 
 extern sf::Sprite ArrowUp;
 extern sf::Sprite ArrowDown;

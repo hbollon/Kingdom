@@ -10,6 +10,7 @@ int main()
     int m_Hauteur = 1080;
     int m_Largeur = 1920;
     int direction;
+    int arrow = 0;
     bool m_fullscreen = false;
 
     sf::ContextSettings settings;
@@ -185,7 +186,7 @@ int main()
                        {
                            if(mapp[i][j].x !=-1 && mapp[i][j].y !=-1)
                                {
-                                   tiles.setPosition(j*40, i*40);
+                                   tiles.setPosition(j*40 , i*40);
                                    tiles.setTextureRect(sf::IntRect(mapp[i][j].x *40, mapp[i][j].y *40, 40, 40));
                                    App->draw(tiles);
                                }

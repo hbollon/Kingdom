@@ -10,7 +10,6 @@ std::string mapSelected = "map.txt";
 std::string mapColSelected = "colMap.txt";
 int levelSelected;
 int gameState;
-int arrow = 0;
 
 sf::Sprite ArrowUp;
 sf::Sprite ArrowDown;
