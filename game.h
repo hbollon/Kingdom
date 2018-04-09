@@ -42,12 +42,24 @@ struct dirTable
     bool changeLeft;
 };
 
+struct mapTable
+{
+    std::string mapUp;
+    std::string mapDown;
+    std::string mapLeft;
+    std::string mapRight;
+    std::string mapDiv1;
+    std::string mapDiv2;
+};
+
 extern struct dirTable changeMap;
+extern struct mapTable mapList;
 
 void mainmenu();
 void loadMap();
 void loadCollision();
 void loadTextures();
+void loadMapList();
 int collisionTest();
 
 #endif // GAME

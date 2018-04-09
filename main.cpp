@@ -32,9 +32,8 @@ int main()
 
     loadMap();
     loadCollision();
+    loadMapList();
     loadTextures();
-
-    //player Player;
 
     while (App->isOpen()) //Boucle de jeu
        {
@@ -86,34 +85,38 @@ int main()
                if (changeMap.changeUp == true)
                {
                     Player.position(80, Player.getY());
-                    mapSelected = "mapUp.txt";
+                    mapSelected = mapList.mapUp;
                     mapColSelected = "colMapEmpty.txt";
                     loadMap();
                     loadCollision();
+                    loadMapList();
                }
                else if (changeMap.changeDown == true)
                {
                     Player.position(80, Player.getY());
-                    mapSelected = "mapDown.txt";
+                    mapSelected = mapList.mapDown;
                     mapColSelected = "colMapEmpty.txt";
                     loadMap();
                     loadCollision();
+                    loadMapList();
                }
                else if (changeMap.changeRight == true)
                {
                     Player.position(80, Player.getY());
-                    mapSelected = "mapRight.txt";
+                    mapSelected = mapList.mapRight;
                     mapColSelected = "colMapEmpty.txt";
                     loadMap();
                     loadCollision();
+                    loadMapList();
                }
                else if (changeMap.changeLeft == true)
                {
                     Player.position(80, Player.getY());
-                    mapSelected = "mapLeft.txt";
+                    mapSelected = mapList.mapLeft;
                     mapColSelected = "colMapEmpty.txt";
                     loadMap();
                     loadCollision();
+                    loadMapList();
                }
            }
 
@@ -298,13 +301,14 @@ void loadCollision() //Chargement de la map de collision
 {
     std::ifstream openfile(mapColSelected.c_str());
     std::vector<int> tempMap;
+    std::string str;
     collision.clear();
 
     if(openfile.is_open())
     {
-        while(!openfile.eof())
+        while(str != "--------------------------")
         {
-            std::string str, value;
+            std::string value;
             std::getline(openfile, str);
             std::stringstream stream(str);
 
