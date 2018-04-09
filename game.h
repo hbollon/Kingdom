@@ -52,6 +52,8 @@ struct mapTable
     std::string mapDiv2;
 };
 
+
+
 extern struct dirTable changeMap;
 extern struct mapTable mapList;
 
